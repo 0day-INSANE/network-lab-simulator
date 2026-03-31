@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Lab - Virtual Network Laboratory</title>
+    <link rel="stylesheet" href="network-lab-complete.css">
+</head>
+<body>
+    <!-- Neural Network Background Canvas -->
+    <canvas id="neuralBg"></canvas>
+    
+    <!-- Neural Network Header Canvas -->
+    <canvas id="neuralHeader"></canvas>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>🌐 Network Lab</h1>
+                <p>Interactive Virtual Network Laboratory</p>
+            </div>
+            <div class="header-right">
+                <button class="header-btn" id="showConfig" title="Keywords & Syntax Guide">
+                    <span class="icon">⚙️</span>
+                    Config
+                </button>
+                <button class="header-btn" id="showHelp" title="Help">
+                    <span class="icon">❓</span>
+                    Help
+                </button>
+                <button class="header-btn" id="changeTheme" title="Change Theme">
+                    <span class="icon">🎨</span>
+                    Theme
+                </button>
+            </div>
+        </header>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <!-- Simulation -->
+            <div class="toolbar-section">
+                <div class="section-header" data-section="simulation">
+                    <span class="toggle-icon">▼</span>
+                    <h3>Simulation</h3>
+                </div>
+                <div class="section-content" id="simulation">
+                    <button class="action-btn" id="createPacket">
+                        <span class="icon">📦</span>
+                        Create Packet
+                    </button>
+                    <button class="action-btn" id="sendPacket">
+                        <span class="icon">🚀</span>
+                        Send Packet
+                    </button>
+                    <button class="action-btn" id="stopSim">
+                        <span class="icon">⏹️</span>
+                        Stop
+                    </button>
+                    <button class="action-btn" id="toggleConsole">
+                        <span class="icon">📊</span>
+                        Console Log
+                    </button>
+                </div>
+            </div>
+
+            <!-- Devices -->
+            <div class="toolbar-section">
+                <div class="section-header" data-section="devices">
+                    <span class="toggle-icon">▼</span>
+                    <h3>Devices</h3>
+                </div>
+                <div class="section-content" id="devices">
+                    <button class="tool-btn" data-device="router">
+                        <span class="icon">🔄</span>
+                        Router
+                    </button>
+                    <button class="tool-btn" data-device="switch">
+                        <span class="icon">⚡</span>
+                        Switch
+                    </button>
+                    <button class="tool-btn" data-device="pc">
+                        <span class="icon">💻</span>
+                        PC
+                    </button>
+                    <button class="tool-btn" data-device="server">
+                        <span class="icon">🖥️</span>
+                        Server
+                    </button>
+                </div>
+            </div>
+
+            <!-- Security -->
+            <div class="toolbar-section">
+                <div class="section-header" data-section="security">
+                    <span class="toggle-icon">▼</span>
+                    <h3>Security</h3>
+                </div>
+                <div class="section-content" id="security">
+                    <button class="tool-btn" data-device="firewall">
+                        <span class="icon">🔥</span>
+                        Firewall
+                    </button>
+                    <button class="tool-btn" data-device="ids">
+                        <span class="icon">🛡️</span>
+                        IDS/IPS
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom Devices -->
+            <div class="toolbar-section">
+                <div class="section-header" data-section="custom">
+                    <span class="toggle-icon">▼</span>
+                    <h3>Custom Devices</h3>
+                </div>
+                <div class="section-content" id="custom">
+                    <button class="action-btn" id="addCustomDevice">
+                        <span class="icon">➕</span>
+                        New Device
+                    </button>
+                    <button class="action-btn" id="manageDevices">
+                        <span class="icon">⚙️</span>
+                        Manage Types
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modes -->
+            <div class="toolbar-section">
+                <div class="section-header" data-section="modes">
+                    <span class="toggle-icon">▼</span>
+                    <h3>Modes</h3>
+                </div>
+                <div class="section-content" id="modes">
+                    <button class="action-btn active" id="moveMode">
+                        <span class="icon">✋</span>
+                        Move
+                    </button>
+                    <button class="action-btn" id="analyzeMode">
+                        <span class="icon">🔍</span>
+                        Analyze
+                    </button>
+                    <button class="action-btn" id="connectMode">
+                        <span class="icon">🔗</span>
+                        Connect
+                    </button>
+                    <button class="action-btn" id="deleteMode">
+                        <span class="icon">🗑️</span>
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+            <!-- Project -->
+            <div class="toolbar-section">
+                <div class="section-header" data-section="project">
+                    <span class="toggle-icon">▼</span>
+                    <h3>Project</h3>
+                </div>
+                <div class="section-content" id="project">
+                    <button class="action-btn" id="saveProject">
+                        <span class="icon">💾</span>
+                        Save
+                    </button>
+                    <button class="action-btn" id="exportDiagram">
+                        <span class="icon">📄</span>
+                        Export TXT Diagram
+                    </button>
+                    <button class="action-btn" id="exportProject">
+                        <span class="icon">📤</span>
+                        Export Full JSON
+                    </button>
+                    <button class="action-btn" id="loadProject">
+                        <span class="icon">📁</span>
+                        Import JSON
+                    </button>
+                    <button class="action-btn danger" id="clearAll">
+                        <span class="icon">🔄</span>
+                        Reset
+                    </button>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Canvas -->
+        <div class="canvas-container">
+            <canvas id="networkCanvas"></canvas>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="info-panel" id="infoPanel">
+            <button class="close-btn" id="closePanel">×</button>
+            <h2 id="deviceName">Select a device</h2>
+            <div id="deviceInfo"></div>
+        </div>
+
+        <!-- Traffic Log Panel -->
+        <div class="log-panel hidden" id="logPanel">
+            <button class="close-btn" id="closeLogPanel">×</button>
+            <div class="log-content-wrapper">
+                <div class="log-header">
+                    <h3>📊 Network Traffic Console</h3>
+                    <button class="btn-clear-log" id="clearLog">Clear</button>
+                </div>
+                <div class="log-content" id="logContent">
+                    <p class="log-empty">Console ready. Create a packet to get started!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Device Config Modal -->
+    <div class="modal" id="configModal">
+        <div class="modal-content" style="max-width: 800px; max-height: 85vh; overflow-y: auto;">
+            <button class="close-btn" id="closeModal">×</button>
+            <h2 id="modalTitle">Device Configuration</h2>
+            <div id="modalBody"></div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="saveConfig">💾 Save Configuration</button>
+                <button class="btn btn-secondary" id="cancelConfig">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Packet Creator Modal -->
+    <div class="modal" id="packetModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closePacketModal">×</button>
+            <h2>📦 Create Network Packet</h2>
+            <div id="packetModalBody">
+                <form id="packetForm">
+                    <div class="form-group">
+                        <label>Source Device</label>
+                        <select name="sourceDevice" id="sourceDevice" required>
+                            <option value="">-- Select device --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Source IP</label>
+                        <input type="text" name="sourceIP" placeholder="Auto (device IP)" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Source Port</label>
+                        <input type="number" name="sourcePort" value="49152" min="1" max="65535" placeholder="E.g.: 49152 (dynamic port)" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Destination IP</label>
+                        <input type="text" name="destIP" placeholder="E.g.: 192.168.1.50" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Destination Port</label>
+                        <input type="number" name="destPort" value="80" min="1" max="65535" placeholder="E.g.: 80 (HTTP) or 443 (HTTPS)" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Protocol</label>
+                        <select name="protocol" required>
+                            <option value="TCP">TCP</option>
+                            <option value="UDP">UDP</option>
+                            <option value="ICMP">ICMP</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Payload (optional)</label>
+                        <textarea name="payload" rows="3" placeholder="Es: GET / HTTP/1.1&#10;Host: example.com"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>TCP Flags (optional)</label>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <label class="checkbox-inline"><input type="checkbox" name="flag_syn"> SYN</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="flag_ack"> ACK</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="flag_fin"> FIN</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="flag_rst"> RST</label>
+                            <label class="checkbox-inline"><input type="checkbox" name="flag_psh"> PSH</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="savePacket">Create & Save</button>
+                <button class="btn btn-success" id="createAndSend">Create & Send</button>
+                <button class="btn btn-secondary" id="cancelPacket">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Device Type Modal -->
+    <div class="modal" id="customDeviceModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeCustomModal">×</button>
+            <h2>➕ Create Custom Device Type</h2>
+            <div id="customDeviceBody">
+                <form id="customDeviceForm">
+                    <div class="form-group">
+                        <label>Device Type Name</label>
+                        <input type="text" name="typeName" placeholder="E.g.: Load Balancer, Proxy Server, VPN Gateway" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category" required>
+                            <option value="">-- Select category --</option>
+                            <option value="devices">📦 Devices (Router, Switch, PC, Server)</option>
+                            <option value="security">🔒 Security (Firewall, IDS/IPS)</option>
+                            <option value="custom">⚙️ Custom Devices (separate section)</option>
+                        </select>
+                        <small style="color: rgba(255,255,255,0.6); font-size: 11px; display: block; margin-top: 5px;">
+                            Choose where the button will appear in the toolbar
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" rows="2" placeholder="E.g.: Balances load across multiple backend servers"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Icon (Emoji or text)</label>
+                        <input type="text" name="icon" placeholder="Es: ⚖️, 🔐, 🌐" maxlength="2">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Or upload an image</label>
+                        <input type="file" name="iconImage" accept="image/*" id="iconImageInput">
+                        <img id="iconPreview" style="display:none; max-width: 60px; margin-top: 10px; border-radius: 8px;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Default Configuration (JSON)</label>
+                        <textarea name="defaultConfig" rows="8" placeholder='Es: {"ip": "192.168.1.10", "subnet": "255.255.255.0", "ports": [80, 443], "algorithm": "round-robin"}'>{}</textarea>
+                        <small style="color: rgba(255,255,255,0.6); font-size: 11px; display: block; margin-top: 5px;">
+                            Add any custom configuration in JSON format
+                        </small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="saveCustomDevice">Save Type</button>
+                <button class="btn btn-secondary" id="cancelCustomDevice">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saved Projects Modal -->
+    <div class="modal" id="projectsModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="close-btn" id="closeProjectsModal">×</button>
+            <h2>💾 Saved Projects</h2>
+            <div id="projectsList" style="max-height: 400px; overflow-y: auto;">
+                <p class="log-empty">No saved projects. Use "Save" to save the current project.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeProjects">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
+            <button class="close-btn" id="closeHelpModal">×</button>
+            <h2>❓ Network Lab Help</h2>
+            <div id="helpContent">
+                <div class="help-section">
+                    <h3>🎯 Introduction</h3>
+                    <p>Network Lab is a professional network simulator that lets you create complex topologies and test network traffic in real time.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>🚀 Getting Started</h3>
+                    <ol>
+                        <li><strong>Add devices:</strong> Click a device in the sidebar, then click on the canvas to place it</li>
+                        <li><strong>Connect devices:</strong> Click "Connect", then select two devices</li>
+                        <li><strong>Configure:</strong> Click "Analyze" and then click a device to configure it</li>
+                        <li><strong>Test:</strong> Create a packet and send it to see network behavior</li>
+                    </ol>
+                </div>
+
+                <div class="help-section">
+                    <h3>📦 Creating Packets</h3>
+                    <p>You can create custom packets by specifying:</p>
+                    <ul>
+                        <li><strong>Source:</strong> Device sending the packet</li>
+                        <li><strong>Destination:</strong> Destination IP</li>
+                        <li><strong>Ports:</strong> Source and destination port</li>
+                        <li><strong>Protocol:</strong> TCP, UDP or ICMP</li>
+                        <li><strong>Flags:</strong> TCP Flags (SYN, ACK, FIN, RST, PSH)</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>🔥 Firewall Configuration</h3>
+                    <p><strong>Inbound Rules:</strong> Control INCOMING traffic to the device</p>
+                    <p><strong>Outbound Rules:</strong> Control OUTGOING traffic from the device</p>
+                    <p>Example JSON rule:</p>
+                    <pre style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; overflow-x: auto;">
+{
+  "name": "Allow HTTPS",
+  "protocol": "TCP",
+  "srcIP": "any",
+  "srcPort": "any",
+  "dstIP": "any",
+  "dstPort": "443",
+  "action": "allow",
+  "flags": []
+}</pre>
+                </div>
+
+                <div class="help-section">
+                    <h3>🧠 Custom Logic</h3>
+                    <p>Each device can have custom logic rules. Example:</p>
+                    <pre style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; overflow-x: auto;">
+{
+  "name": "Block SSH",
+  "field": "destPort",
+  "operator": "equals",
+  "value": 22,
+  "action": "block"
+}</pre>
+                    <p><strong>Available operators:</strong> equals, not_equals, contains, greater_than, less_than, in_list, has_flag</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>🎨 Colored Connections</h3>
+                    <p><strong>🟢 Bright green with animated packets:</strong> ACTIVE and ALLOWED communication</p>
+                    <p><strong>🟠 Static orange:</strong> Physical connection present but communication INACTIVE or BLOCKED</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>💾 Saving Projects</h3>
+                    <p><strong>Save:</strong> Saves to local storage (right-click to see list)</p>
+                    <p><strong>Export TXT Diagram:</strong> Generates a text file with all network info</p>
+                    <p><strong>Export Full JSON:</strong> Downloads a JSON file with EVERYTHING (devices, connections, configurations, custom types)</p>
+                    <p><strong>Import JSON:</strong> Load an exported JSON file to restore everything</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>⚙️ Custom Devices</h3>
+                    <p>You can create your own custom device types with:</p>
+                    <ul>
+                        <li>Custom name and description</li>
+                        <li>Category choice (Devices, Security or Custom)</li>
+                        <li>Emoji icon or uploaded image</li>
+                        <li>Custom JSON configuration</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>🎨 Themes</h3>
+                    <p>Customize the interface colors by clicking "Theme" in the header.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>📊 Console Log</h3>
+                    <p>Click "Console Log" to see all network traffic details in real time.</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeHelp">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Selector Modal -->
+    <div class="modal" id="themeModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="close-btn" id="closeThemeModal">×</button>
+            <h2>🎨 Select Theme</h2>
+            <div id="themeContent" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px 0;">
+                <button class="theme-option" data-theme="default">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #0a0e27 0%, #050814 100%);">
+                        <div style="display: flex; gap: 5px; padding: 10px;">
+                            <div style="width: 20px; height: 20px; background: #00f2ff; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #ff00ff; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #00ff88; border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                    <span>Default (Cyber)</span>
+                </button>
+                <button class="theme-option" data-theme="ocean">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);">
+                        <div style="display: flex; gap: 5px; padding: 10px;">
+                            <div style="width: 20px; height: 20px; background: #4cc9f0; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #4361ee; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #3a0ca3; border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                    <span>Ocean</span>
+                </button>
+                <button class="theme-option" data-theme="forest">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #081c15 0%, #1b4332 100%);">
+                        <div style="display: flex; gap: 5px; padding: 10px;">
+                            <div style="width: 20px; height: 20px; background: #52b788; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #40916c; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #95d5b2; border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                    <span>Forest</span>
+                </button>
+                <button class="theme-option" data-theme="sunset">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #370617 0%, #6a040f 100%);">
+                        <div style="display: flex; gap: 5px; padding: 10px;">
+                            <div style="width: 20px; height: 20px; background: #ff6d00; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #ff9e00; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #ffba08; border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                    <span>Sunset</span>
+                </button>
+                <button class="theme-option" data-theme="purple">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #240046 0%, #10002b 100%);">
+                        <div style="display: flex; gap: 5px; padding: 10px;">
+                            <div style="width: 20px; height: 20px; background: #9d4edd; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #c77dff; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #e0aaff; border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                    <span>Purple Dream</span>
+                </button>
+                <button class="theme-option" data-theme="hacker">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #000000 0%, #0d1b0d 100%);">
+                        <div style="display: flex; gap: 5px; padding: 10px;">
+                            <div style="width: 20px; height: 20px; background: #00ff00; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #00cc00; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: #009900; border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                    <span>Matrix Hacker</span>
+                </button>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeTheme">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Config/Keywords Modal -->
+    <div class="modal" id="configModal2">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+            <button class="close-btn" id="closeConfigModal">×</button>
+            <h2>⚙️ Keywords & JSON Syntax Guide</h2>
+            <div id="configContent" style="padding: 10px 0;">
+                
+                <div class="help-section">
+                    <h3>📋 FIREWALL RULES (Inbound/Outbound)</h3>
+                    <p>Firewall rules control incoming (Inbound) and outgoing (Outbound) traffic.</p>
+
+                    <h4>Basic Structure:</h4>
+                    <pre style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; overflow-x: auto; border-left: 3px solid var(--primary);">
+[
+  {
+    "name": "Rule name",
+    "protocol": "TCP|UDP|ICMP|any",
+    "srcIP": "source IP or 'any' or subnet (192.168.1.0/24)",
+    "srcPort": "source port or 'any'",
+    "dstIP": "destination IP or 'any' or subnet",
+    "dstPort": "destination port or 'any'",
+    "action": "allow|deny",
+    "flags": ["SYN", "ACK", "FIN", "RST", "PSH"]
+  }
+]</pre>
+
+                    <h4>📝 Keywords Firewall Rules:</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                        <tr style="background: rgba(0,242,255,0.1); border-bottom: 2px solid var(--primary);">
+                            <th style="padding: 10px; text-align: left;">Field</th>
+                            <th style="padding: 10px; text-align: left;">Possible Values</th>
+                            <th style="padding: 10px; text-align: left;">Description</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>name</code></td>
+                            <td style="padding: 10px;">Any string</td>
+                            <td style="padding: 10px;">Descriptive rule name</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>protocol</code></td>
+                            <td style="padding: 10px;"><code>"TCP"</code>, <code>"UDP"</code>, <code>"ICMP"</code>, <code>"any"</code></td>
+                            <td style="padding: 10px;">Transport protocol</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>srcIP</code></td>
+                            <td style="padding: 10px;"><code>"192.168.1.100"</code>, <code>"192.168.1.0/24"</code>, <code>"any"</code></td>
+                            <td style="padding: 10px;">Source IP (single, subnet, or any)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>srcPort</code></td>
+                            <td style="padding: 10px;"><code>"80"</code>, <code>"1024-65535"</code>, <code>"any"</code></td>
+                            <td style="padding: 10px;">Source port</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>dstIP</code></td>
+                            <td style="padding: 10px;"><code>"10.0.0.1"</code>, <code>"10.0.0.0/8"</code>, <code>"any"</code></td>
+                            <td style="padding: 10px;">Destination IP</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>dstPort</code></td>
+                            <td style="padding: 10px;"><code>"443"</code>, <code>"8000-9000"</code>, <code>"any"</code></td>
+                            <td style="padding: 10px;">Destination port</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>action</code></td>
+                            <td style="padding: 10px;"><code>"allow"</code>, <code>"deny"</code></td>
+                            <td style="padding: 10px;">Action to execute</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>flags</code></td>
+                            <td style="padding: 10px;"><code>["SYN"]</code>, <code>["SYN", "ACK"]</code>, <code>[]</code></td>
+                            <td style="padding: 10px;">Required TCP flags (optional)</td>
+                        </tr>
+                    </table>
+
+                    <h4>🎯 Firewall Rule Examples:</h4>
+                    <pre style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; overflow-x: auto; border-left: 3px solid var(--success);">
+// Allow HTTP from anywhere
+{
+  "name": "Allow HTTP",
+  "protocol": "TCP",
+  "srcIP": "any",
+  "srcPort": "any",
+  "dstIP": "any",
+  "dstPort": "80",
+  "action": "allow",
+  "flags": []
+}
+
+// Block SSH from the internet
+{
+  "name": "Block SSH from internet",
+  "protocol": "TCP",
+  "srcIP": "0.0.0.0/0",
+  "srcPort": "any",
+  "dstIP": "192.168.1.0/24",
+  "dstPort": "22",
+  "action": "deny",
+  "flags": ["SYN"]
+}
+
+// Allow only from admin
+{
+  "name": "Allow from admin only",
+  "protocol": "any",
+  "srcIP": "192.168.1.5",
+  "srcPort": "any",
+  "dstIP": "192.168.1.50",
+  "dstPort": "any",
+  "action": "allow",
+  "flags": []
+}</pre>
+                </div>
+
+                <div class="help-section" style="margin-top: 30px;">
+                    <h3>🧠 CUSTOM LOGIC (Advanced)</h3>
+                    <p>Custom logic rules are more powerful than firewall rules. They are applied FIRST and use advanced operators.</p>
+
+                    <h4>Basic Structure:</h4>
+                    <pre style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; overflow-x: auto; border-left: 3px solid var(--secondary);">
+[
+  {
+    "name": "Logic name",
+    "field": "sourceIP|sourcePort|destIP|destPort|protocol|flags",
+    "operator": "equals|not_equals|contains|greater_than|less_than|in_list|has_flag",
+    "value": "value or array",
+    "action": "allow|block"
+  }
+]</pre>
+
+                    <h4>📝 Keywords Logic Rules:</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                        <tr style="background: rgba(255,0,255,0.1); border-bottom: 2px solid var(--secondary);">
+                            <th style="padding: 10px; text-align: left;">Field</th>
+                            <th style="padding: 10px; text-align: left;">Possible Values</th>
+                            <th style="padding: 10px; text-align: left;">Description</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>name</code></td>
+                            <td style="padding: 10px;">Any string</td>
+                            <td style="padding: 10px;">Logic name</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>field</code></td>
+                            <td style="padding: 10px;"><code>"sourceIP"</code>, <code>"sourcePort"</code>, <code>"destIP"</code>, <code>"destPort"</code>, <code>"protocol"</code>, <code>"flags"</code></td>
+                            <td style="padding: 10px;">Packet field to evaluate</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>operator</code></td>
+                            <td style="padding: 10px;"><code>"equals"</code>, <code>"not_equals"</code>, <code>"contains"</code>, <code>"greater_than"</code>, <code>"less_than"</code>, <code>"in_list"</code>, <code>"has_flag"</code></td>
+                            <td style="padding: 10px;">Comparison operator</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>value</code></td>
+                            <td style="padding: 10px;">Number, string, or array <code>[80, 443, 22]</code></td>
+                            <td style="padding: 10px;">Value to compare against</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>action</code></td>
+                            <td style="padding: 10px;"><code>"allow"</code>, <code>"block"</code></td>
+                            <td style="padding: 10px;">Action to execute</td>
+                        </tr>
+                    </table>
+
+                    <h4>🔧 Available Operators:</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                        <tr style="background: rgba(255,0,255,0.1); border-bottom: 2px solid var(--secondary);">
+                            <th style="padding: 10px; text-align: left;">Operator</th>
+                            <th style="padding: 10px; text-align: left;">Usage</th>
+                            <th style="padding: 10px; text-align: left;">Example</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>equals</code></td>
+                            <td style="padding: 10px;">Field == Value</td>
+                            <td style="padding: 10px;"><code>"destPort" equals 80</code></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>not_equals</code></td>
+                            <td style="padding: 10px;">Field != Value</td>
+                            <td style="padding: 10px;"><code>"protocol" not_equals "ICMP"</code></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>contains</code></td>
+                            <td style="padding: 10px;">Field contains String</td>
+                            <td style="padding: 10px;"><code>"sourceIP" contains "192.168"</code></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>greater_than</code></td>
+                            <td style="padding: 10px;">Field > Value</td>
+                            <td style="padding: 10px;"><code>"destPort" greater_than 1024</code></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>less_than</code></td>
+                            <td style="padding: 10px;">Field < Value</td>
+                            <td style="padding: 10px;"><code>"sourcePort" less_than 1024</code></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>in_list</code></td>
+                            <td style="padding: 10px;">Field in Array</td>
+                            <td style="padding: 10px;"><code>"destPort" in_list [80,443,22]</code></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 10px;"><code>has_flag</code></td>
+                            <td style="padding: 10px;">Flags contains Flag</td>
+                            <td style="padding: 10px;"><code>"flags" has_flag "SYN"</code></td>
+                        </tr>
+                    </table>
+
+                    <h4>🎯 Logic Rule Examples:</h4>
+                    <pre style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; overflow-x: auto; border-left: 3px solid var(--secondary);">
+// Block Telnet (port 23)
+{
+  "name": "Block Telnet",
+  "field": "destPort",
+  "operator": "equals",
+  "value": 23,
+  "action": "block"
+}
+
+// Web ports only
+{
+  "name": "Allow only web ports",
+  "field": "destPort",
+  "operator": "in_list",
+  "value": [80, 443, 8080],
+  "action": "allow"
+}
+
+// Block high ports (possible malware)
+{
+  "name": "Block high ports",
+  "field": "destPort",
+  "operator": "greater_than",
+  "value": 50000,
+  "action": "block"
+}
+
+// Internal network only
+{
+  "name": "Only internal network",
+  "field": "sourceIP",
+  "operator": "contains",
+  "value": "192.168.1",
+  "action": "allow"
+}
+
+// SYN flood protection
+{
+  "name": "Block SYN flood",
+  "field": "flags",
+  "operator": "has_flag",
+  "value": "SYN",
+  "action": "block"
+}</pre>
+                </div>
+
+                <div class="help-section" style="margin-top: 30px;">
+                    <h3>📊 EVALUATION ORDER</h3>
+                    <p>When a packet passes through a device, rules are applied in this order:</p>
+                    <ol style="line-height: 2;">
+                        <li><strong>Custom Logic</strong> - If blocking, the packet is dropped immediately</li>
+                        <li><strong>Specific Firewall Rules</strong> - Evaluated top to bottom</li>
+                        <li><strong>Default Policy</strong> - If no rule matches, the default policy (allow/deny) is applied</li>
+                        <li><strong>Open Port Check</strong> - Only for the final recipient, checks if the port is in openPorts[]</li>
+                    </ol>
+                </div>
+
+                <div class="help-section" style="margin-top: 30px;">
+                    <h3>💡 BEST PRACTICES</h3>
+                    <ul style="line-height: 2;">
+                        <li><strong>Default Deny:</strong> Set default to "deny" and allow only what is needed</li>
+                        <li><strong>Rule Order:</strong> More specific rules should come FIRST</li>
+                        <li><strong>Documentation:</strong> Use descriptive names for every rule</li>
+                        <li><strong>Testing:</strong> Always test with the Console Log open</li>
+                        <li><strong>Custom Logic:</strong> Use for complex patterns or multiple conditions</li>
+                        <li><strong>Firewall Rules:</strong> Use for exact IP/Port matches</li>
+                    </ul>
+                </div>
+
+                <div class="help-section" style="margin-top: 30px; background: rgba(255,170,0,0.1); padding: 15px; border-radius: 8px; border-left: 3px solid var(--warning);">
+                    <h3>⚠️ IMPORTANT</h3>
+                    <p><strong>All devices (base and custom) ALWAYS have available:</strong></p>
+                    <ul>
+                        <li><code>inboundRules</code> - Array of inbound traffic rules</li>
+                        <li><code>outboundRules</code> - Array of outbound traffic rules</li>
+                        <li><code>logicRules</code> - Array of advanced custom logic rules</li>
+                    </ul>
+                    <p>These fields are automatically added to ALL devices, including custom ones you create!</p>
+                </div>
+
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeConfig">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="network-lab-complete.js"></script>
+</body>
+</html>
